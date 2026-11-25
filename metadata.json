@@ -1,0 +1,6 @@
+{
+  "name": "大人のテニスIQ戦略",
+  "description": "県大会1回戦負けから5年で優勝19回を実現した、40代以上のための大人のテニスIQ戦略【無料】動画プログラム",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
