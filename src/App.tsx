@@ -4,8 +4,12 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowRight, Check, X } from 'lucide-react';
+import { ArrowRight, BookOpen, Check, SquarePlay, X } from 'lucide-react';
 import lp2Image from '../LP2-1.png';
+import tokuten1Image from '../tokuten1.png';
+import tokuten2Image from '../tokuten2.png';
+import tokuten3Image from '../tokuten3.png';
+import tokuten4Image from '../tokuten4.png';
 
 type FooterLinkKey =
   | 'privacy'
@@ -30,20 +34,36 @@ const CURRICULUM_ITEMS = [
 
 const BONUS_ITEMS = [
   {
-    prefix: '特典1：',
+    prefix: '特典1',
     body: '初対戦の相手から“無意識のクセ”を読み取る！『情報収集術』',
+    image: tokuten1Image,
+    imageWidthClass: 'w-40 sm:w-60 md:w-64 lg:w-[280px] ml-4 sm:ml-10 md:ml-14',
+    iconType: 'book' as const,
+    description:
+      '試合前の「5分間のアップ」だけで、\n相手の最大の弱点や「困った時に\nどこに逃げるか」を見抜く3つの\nテクニックを公開。\n\n試合開始のコールが鳴る前から、\nあなたが相手をコントロー側に回れます。',
+    highlight: '「困った時に\nどこに逃げるか」を見抜く3つの\nテクニック',
   },
   {
-    prefix: '特典2：',
+    prefix: '特典2',
     body: '【動画で解説】緊張の正体を知って試合に勝つメンタル攻略法',
+    image: tokuten2Image,
+    imageWidthClass: 'w-[52%] sm:w-[58%] md:w-[520px] lg:w-[600px]',
+    iconType: 'video' as const,
+    description:
+      '試合になると、「チキり」や「パニック」を根結するための特別動画です。緊張のメカニズムを科学的に理解することで、プレッシャーのかかる場面でも練習通りにポイントを取り切る「ブレないメンタル」が手に入ります。',
+    highlight: '練習通りにポイントを取り切る',
   },
   {
-    prefix: '特典3：',
+    prefix: '特典3',
     body: '【コピペでOK】あなた専用の『勝ち筋』をAIが自動作成！秘密のAI指示書',
+    image: tokuten3Image,
+    imageWidthClass: 'w-40 sm:w-60 md:w-64 lg:w-[280px] ml-4 sm:ml-10 md:ml-14',
   },
   {
-    prefix: '特典4：',
+    prefix: '特典4',
     body: '【迷いが消える】ダブルスで勝つための『試合前3分チェックリスト』',
+    image: tokuten4Image,
+    imageWidthClass: 'w-full sm:w-[82%] md:w-[520px] lg:w-[600px]',
   },
 ] as const;
 
@@ -289,16 +309,68 @@ export default function App() {
               4大特典プレゼント中
             </h2>
 
-            <div className="mt-14 sm:mt-20 bg-white space-y-6 sm:space-y-8">
+            <div className="mt-14 sm:mt-20 bg-white space-y-16 sm:space-y-24 md:space-y-28">
               {BONUS_ITEMS.map((bonus) => (
                 <div
                   key={bonus.prefix}
-                  className="bg-white py-2 sm:py-3 flex items-center"
+                  className="bg-white py-2 sm:py-3 flex flex-col items-start gap-6 sm:gap-8"
                 >
-                  <p className="text-lg sm:text-xl md:text-[22px] font-bold leading-[1.55] tracking-[-0.015em] text-[#1D1D1F]">
-                    <span className="text-[#0071E3] font-black">{bonus.prefix}</span>
-                    {bonus.body}
-                  </p>
+                  <div className="space-y-2 sm:space-y-3">
+                    <p className="text-3xl sm:text-4xl md:text-[42px] font-black leading-[1.15] tracking-[-0.03em] text-[#0071E3]">
+                      {bonus.prefix}
+                    </p>
+                    <p className="text-xl sm:text-2xl md:text-[28px] font-bold leading-[1.45] tracking-[-0.02em] text-[#1D1D1F]">
+                      {bonus.body}
+                    </p>
+                  </div>
+                  {'image' in bonus && bonus.image && (
+                    <div className="w-full flex flex-row items-center gap-4 sm:gap-8 md:gap-10">
+                      <div className={`${bonus.imageWidthClass} shrink-0`}>
+                        <img
+                          src={bonus.image}
+                          alt={`${bonus.prefix}${bonus.body}`}
+                          referrerPolicy="no-referrer"
+                          className="w-full h-auto block"
+                        />
+                      </div>
+                      {'description' in bonus && bonus.description && (
+                        <div className="space-y-3 sm:space-y-4">
+                          {'iconType' in bonus && bonus.iconType === 'book' && (
+                            <BookOpen
+                              aria-hidden="true"
+                              className="w-9 h-9 sm:w-11 sm:h-11 text-[#248A3D] stroke-[1.75]"
+                            />
+                          )}
+                          {'iconType' in bonus && bonus.iconType === 'video' && (
+                            <SquarePlay
+                              aria-hidden="true"
+                              className="w-9 h-9 sm:w-11 sm:h-11 text-[#D70015] stroke-[1.75]"
+                            />
+                          )}
+                          <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm md:text-[15px] font-normal text-[#6E6E73] leading-[1.8]">
+                            {bonus.description.split('\n\n').map((paragraph, index) => {
+                              const highlight = 'highlight' in bonus ? bonus.highlight : undefined;
+                              if (highlight && paragraph.includes(highlight)) {
+                                const [before, after] = paragraph.split(highlight);
+                                return (
+                                  <p key={index} className="whitespace-pre-line">
+                                    {before}
+                                    <strong className="font-bold text-black">{highlight}</strong>
+                                    {after}
+                                  </p>
+                                );
+                              }
+                              return (
+                                <p key={index} className="whitespace-pre-line">
+                                  {paragraph}
+                                </p>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -328,7 +400,7 @@ export default function App() {
               講師プロフィール
             </p>
             <h2 className="mt-4 text-3xl sm:text-5xl md:text-[64px] font-black text-black tracking-[-0.035em] leading-[1.1]">
-              長谷川 誠（48歳）
+              長谷川 誠（49歳）
             </h2>
 
             <div className="mt-12 sm:mt-16 bg-[#F5F5F7] rounded-[28px] sm:rounded-[32px] p-8 sm:p-14 md:p-16 space-y-7 sm:space-y-8">
